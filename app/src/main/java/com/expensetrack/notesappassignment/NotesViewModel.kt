@@ -5,14 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.expensetrack.notesappassignment.data.NoteEntity
-import com.expensetrack.notesappassignment.data.NotesDao
+import com.expensetrack.notesappassignment.data.NotesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class NotesViewModel @Inject constructor(
-    private val notesDao: NotesDao
+    private val notesRepository: NotesRepository
 ) : ViewModel() {
 
     private val _notes = MutableLiveData<List<NoteEntity>>()
@@ -20,7 +20,7 @@ class NotesViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            notesDao.getAllNotes().collect { list ->
+            notesRepository.getAllNotes().collect { list ->
                 _notes.value = list
             }
         }
@@ -28,19 +28,19 @@ class NotesViewModel @Inject constructor(
 
     fun addNote(note: NoteEntity) {
         viewModelScope.launch {
-            notesDao.insertNote(note)
+            notesRepository.insertNote(note)
         }
     }
 
     fun updateNote(note: NoteEntity) {
         viewModelScope.launch {
-            notesDao.updateNote(note)
+            notesRepository.updateNote(note)
         }
     }
 
     fun deleteNote(note: NoteEntity) {
         viewModelScope.launch {
-            notesDao.deleteNote(note)
+            notesRepository.deleteNote(note)
         }
     }
 }

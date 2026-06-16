@@ -1,6 +1,7 @@
 package com.expensetrack.notesappassignment.di
 
 import android.content.Context
+import androidx.room.Room
 import com.expensetrack.notesappassignment.data.NotesDao
 import com.expensetrack.notesappassignment.data.NotesDatabase
 import dagger.Module
@@ -17,7 +18,10 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideDatabase(@ApplicationContext context: Context): NotesDatabase {
-        return NotesDatabase.getDatabase(context)
+        return Room.databaseBuilder(context,
+            NotesDatabase::class.java,
+            "notes_database"
+        ).build()
     }
 
     @Provides
